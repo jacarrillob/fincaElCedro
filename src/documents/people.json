@@ -1,0 +1,69 @@
+[
+    {
+      "id": 1,
+    "firstName": "Elber",
+    "secondName": "Antonio",
+    "firstLastName": "Carrillo", 
+    "secondLastName": "Escarraga",
+    "email": "",
+    "phone": "" ,
+    "address": "",
+    "notes": ""
+  },
+  {
+    "id": 2,
+    "firstName": "José",
+    "secondName": "Alfosno",
+    "firstLastName": "Carrillo", 
+    "secondLastName": "Bermudez",
+    "email": "",
+    "phone": "3103267127" ,
+    "address": "",
+    "notes": ""
+  },
+  {
+    "id": 3,
+    "firstName": "Edier",
+    "secondName": "David",
+    "firstLastName": "Carrillo", 
+    "secondLastName": "Bermudez",
+    "email": "",
+    "phone": "" ,
+    "address": "",
+    "notes": ""
+  },
+  {
+    "id": 4,
+    "firstName": "Wilson",
+    "secondName": "Javier",
+    "firstLastName": "Carrillo", 
+    "secondLastName": "Bermudez",
+    "email": "",
+    "phone": "" ,
+    "address": "",
+    "notes": ""
+  },
+  {
+    "id": 5,
+    "firstName": "Frijol",
+    "secondName": "",
+    "firstLastName": "Frijol", 
+    "secondLastName": "",
+    "email": "",
+    "phone": "" ,
+    "address": "",
+    "notes": ""
+  },
+  {
+    "id": 6,
+    "firstName": "Plátano",
+    "secondName": "",
+    "firstLastName": "Plátano", 
+    "secondLastName": "",
+    "email": "",
+    "phone": "" ,
+    "address": "",
+    "notes": ""
+  }
+
+]
