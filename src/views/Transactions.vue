@@ -104,8 +104,6 @@ watch(groupTotalByResponsible, () => {
       </select>
     </form>
 
-    {{ groupTotalByResponsible }}
-
     <div v-if="loading">
       <p>Cargando...</p>
     </div>

@@ -53,6 +53,7 @@ const toggleMenu = () => {
           <RouterLink to="/gallery" class="block px-3 py-2 text-gray-700 hover:text-green-700">Galería</RouterLink>
           <RouterLink to="/products" class="block px-3 py-2 text-gray-700 hover:text-green-700">Productos</RouterLink>
           <RouterLink to="/contact" class="block px-3 py-2 text-gray-700 hover:text-green-700">Contacto</RouterLink>
+          <RouterLink to="/transactions" class="block px-3 py-2 text-gray-700 hover:text-green-700">Transacciones</RouterLink>
           
           <template v-if="!authStore.user">
             <RouterLink to="/login" class="block px-3 py-2 text-gray-700 hover:text-green-700">Login</RouterLink>
