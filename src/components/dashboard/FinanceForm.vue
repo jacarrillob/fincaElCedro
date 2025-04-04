@@ -8,12 +8,13 @@ const transaction = reactive<Transaction>({
   description: '',
   amount: 0,
   type: 'income',
-  date: new Date(),
+  transactionDate: '',
   createdAt: new Date(),
   updatedAt: new Date(),
-  category: '',
+  category: undefined,
   notes: '',
-  responsible: ''
+  responsibleId: 0,
+  responsible: undefined
 })
 
 const loading = ref(false)
@@ -37,12 +38,12 @@ const handleSubmit = async () => {
     transaction.description = ''
     transaction.amount = 0
     transaction.type = 'income'
-    transaction.transactionDate = new Date()
+    transaction.transactionDate = ''
     transaction.createdAt = new Date()
     transaction.updatedAt = new Date()
-    transaction.category = ''
+    transaction.category = undefined
     transaction.notes = ''
-    transaction.responsible = ''
+    transaction.responsible = undefined
 
 
     error.value = ''
