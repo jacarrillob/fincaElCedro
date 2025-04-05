@@ -24,20 +24,20 @@ onMounted(async () => {
     <h1 class="text-3xl font-bold text-coffee">Blog</h1>
 
     <div v-if="loading" class="text-center py-8">
-      <p class="text-gray-600">Cargando artículos...</p>
+      <p class="text-gray">Cargando artículos...</p>
     </div>
 
     <div v-else-if="posts.length === 0" class="text-center py-8">
-      <p class="text-gray-600">No hay artículos disponibles.</p>
+      <p class="text-gray">No hay artículos disponibles.</p>
     </div>
 
     <div v-else class="grid md:grid-cols-2 gap-6">
-      <article v-for="post in posts" :key="post.id" class="bg-white rounded-lg shadow-sm overflow-hidden">
+      <article v-for="post in posts" :key="post.id" class="bg-white rounded-lg shadow-lg overflow-hidden">
         <img v-if="post.image" :src="post.image" :alt="post.title" class="w-full h-48 object-cover">
-        <div class="p-6">
-          <h2 class="text-xl font-semibold text-coffee mb-2">{{ post.title }}</h2>
-          <p class="text-gray-600 mb-4">{{ post.content }}</p>
-          <div class="text-sm text-gray-500">{{ new Date(post.date).toLocaleDateString() }}</div>
+        <div class="p-6 flex flex-col gap-2">
+          <h2 class="text-xl font-semibold text-black">{{ post.title }}</h2>
+          <div class="text-md text-gray">{{ new Date(post.date).toLocaleDateString() }}</div>
+          <p class="text-gray">{{ post.content }}</p>
         </div>
       </article>
     </div>

@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { collection, addDoc } from 'firebase/firestore'
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { db, storage } from '../../firebase/config'
+import { BlogPost } from '../../models/BlogPost'
 
-const title = ref('')
-const content = ref('')
+const post = reactive<BlogPost>({
+  title: '',
+  content: '',
+  date: new Date().toISOString(),
+  image: ''
+})
+
 const image = ref<File | null>(null)
 const loading = ref(false)
 const error = ref('')
@@ -18,7 +24,7 @@ const handleImageChange = (event: Event) => {
 }
 
 const handleSubmit = async () => {
-  if (!title.value || !content.value) {
+  if (!post.title || !post.content) {
     error.value = 'Por favor completa todos los campos requeridos'
     return
   }
@@ -30,17 +36,14 @@ const handleSubmit = async () => {
       const imageRef = storageRef(storage, `blog/${Date.now()}-${image.value.name}`)
       await uploadBytes(imageRef, image.value)
       imageUrl = await getDownloadURL(imageRef)
+      post.image = imageUrl
     }
 
-    await addDoc(collection(db, 'posts'), {
-      title: title.value,
-      content: content.value,
-      image: imageUrl,
-      date: new Date().toISOString()
-    })
+    await addDoc(collection(db, 'posts'), post)
 
-    title.value = ''
-    content.value = ''
+    post.title = ''
+    post.content = ''
+    post.image = ''
     image.value = null
     error.value = ''
   } catch (err) {
@@ -54,7 +57,7 @@ const handleSubmit = async () => {
 
 <template>
   <div class="bg-white p-6 rounded-lg shadow-sm">
-    <h2 class="text-xl font-semibold text-coffee mb-4">Nuevo Post</h2>
+    <h2 class="text-xl font-semibold text-black mb-4">Nuevo Post</h2>
 
     <form @submit.prevent="handleSubmit" class="space-y-4">
       <div v-if="error" class="bg-red-100 text-red-700 p-3 rounded-md">
@@ -62,29 +65,32 @@ const handleSubmit = async () => {
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">Título</label>
+        <label for="title" class="block text-sm font-medium text-black">Título</label>
         <input
-          v-model="title"
+          v-model="post.title"
           type="text"
+          id="title"
           required
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-coffee focus:ring focus:ring-coffee focus:ring-opacity-50"
+          class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">Contenido</label>
+        <label for="content" class="block text-sm font-medium text-black">Contenido</label>
         <textarea
-          v-model="content"
+          v-model="post.content"
           rows="4"
+          id="content"
           required
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-coffee focus:ring focus:ring-coffee focus:ring-opacity-50"
+          class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
         ></textarea>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">Imagen</label>
+        <label for="image" class="block text-sm font-medium text-black">Imagen</label>
         <input
           type="file"
+          id="image"
           accept="image/*"
           @change="handleImageChange"
           class="mt-1 block w-full"
@@ -94,7 +100,7 @@ const handleSubmit = async () => {
       <button
         type="submit"
         :disabled="loading"
-        class="w-full bg-coffee text-white py-2 px-4 rounded-md hover:bg-coffee-dark focus:outline-none focus:ring-2 focus:ring-coffee focus:ring-opacity-50 disabled:opacity-50"
+        class="w-full bg-green text-white py-2 px-4 rounded-md hover:bg-green focus:outline-none focus:ring-2 focus:ring-green focus:ring-opacity-50 disabled:opacity-50"
       >
         {{ loading ? 'Creando...' : 'Crear Post' }}
       </button>
