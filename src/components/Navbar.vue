@@ -26,12 +26,12 @@ const toggleMenu = () => {
           <RouterLink to="/gallery" class="text-black hover:text-green">Galería</RouterLink>
           <RouterLink to="/products" class="text-black hover:text-green">Productos</RouterLink>
           <RouterLink to="/contact" class="text-black hover:text-green">Contacto</RouterLink>
-          <RouterLink to="/transactions" class="text-black hover:text-green">Transacciones</RouterLink>
           
           <template v-if="!authStore.user">
             <RouterLink to="/login" class="text-black hover:text-green">Login</RouterLink>
           </template>
           <template v-else>
+            <RouterLink to="/transactions" class="text-black hover:text-green">Transacciones</RouterLink>
             <RouterLink to="/dashboard" class="text-gray-700 hover:text-green-700">Dashboard</RouterLink>
             <button @click="authStore.logout" class="text-gray-700 hover:text-green-700">Cerrar Sesión</button>
           </template>
@@ -53,12 +53,12 @@ const toggleMenu = () => {
           <RouterLink to="/gallery" class="block px-3 py-2 text-gray-700 hover:text-green-700">Galería</RouterLink>
           <RouterLink to="/products" class="block px-3 py-2 text-gray-700 hover:text-green-700">Productos</RouterLink>
           <RouterLink to="/contact" class="block px-3 py-2 text-gray-700 hover:text-green-700">Contacto</RouterLink>
-          <RouterLink to="/transactions" class="block px-3 py-2 text-gray-700 hover:text-green-700">Transacciones</RouterLink>
           
           <template v-if="!authStore.user">
             <RouterLink to="/login" class="block px-3 py-2 text-gray-700 hover:text-green-700">Login</RouterLink>
           </template>
           <template v-else>
+            <RouterLink to="/transactions" class="block px-3 py-2 text-gray-700 hover:text-green-700">Transacciones</RouterLink>
             <RouterLink to="/dashboard" class="block px-3 py-2 text-gray-700 hover:text-green-700">Dashboard</RouterLink>
             <button @click="authStore.logout" class="block w-full text-left px-3 py-2 text-gray-700 hover:text-green-700">
               Cerrar Sesión

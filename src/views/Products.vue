@@ -6,6 +6,7 @@ import { ref as dbRef } from 'firebase/database'
 import { db, rtdb } from '../firebase/config'
 
 const todos = useDatabaseList(dbRef(rtdb, '/products'))
+console.log(todos)
 
 
 interface Product {
@@ -37,7 +38,7 @@ onMounted(async () => {
 <template>
 
   <div class="space-y-8">
-    {{ todos }}
+    <!-- {{ todos }} -->
     <h1 class="text-3xl font-bold text-coffee">Productos</h1>
 
     <div v-if="loading" class="text-center py-8">
