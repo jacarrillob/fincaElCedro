@@ -1,21 +1,26 @@
 [
     {
+        "id": 1,        
         "name": "Alimentación",
         "description": "Gastos relacionados con la alimentación"
     },
     {
+        "id": 2,
         "name": "Mano de obra",
         "description": "Gastos relacionados con la mano de obra"
     },
     {
+        "id": 3,
         "name": "Transporte",
         "description": "Gastos relacionados con el transporte"
     },
     {
+        "id": 4,
         "name": "Servicios",
         "description": "Gastos relacionados con los servicios"
     },
     {
+        "id": 5,
         "name": "Inversión",
         "description": "Gastos relacionados con la inversión"
     }

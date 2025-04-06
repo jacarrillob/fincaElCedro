@@ -5,8 +5,7 @@ import { collection, addDoc } from 'firebase/firestore'
 import { db } from '../../firebase/config'
 
 import type { Transaction } from '@/models/Transaction'
-import categories from '../../documents/categories.json'
-import people from '../../documents/people.json'
+import people from '../../data/people.json'
 import { Person } from "@/models/Person";
 
 const monthMap: Record<string, string> = {
@@ -44,9 +43,9 @@ const handleFileUpload = async (event: Event) => {
         transactionDate: convertToMonthFormat(row["Mes"]),
         createdAt: new Date(),
         updatedAt: new Date(),
-        category: categories[4],
+        categoryId: 5,
         notes: row["DescripcionMovimiento"],
-        responsible: findResponsible(row["Responsable"])
+        responsibleId: findResponsible(row["Responsable"]).id
       };
     });
 
@@ -63,10 +62,9 @@ const uploadToFirebase = async (transactions: any) => {
       transactionDate: transaction.transactionDate || "",
       createdAt: new Date(),
       updatedAt: new Date(),
-      category: transaction.category || null,
+      categoryId: transaction.categoryId || null,
       notes: transaction.notes || "",
-      responsible: transaction.responsible,
-      responsibleId: transaction.responsible.id
+      responsibleId: transaction.responsibleId
     } as Transaction;
 
     await addDoc(transactionsCollection, formattedTransaction);

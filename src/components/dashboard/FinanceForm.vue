@@ -1,20 +1,25 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { collection, addDoc } from 'firebase/firestore'
 import { db } from '../../firebase/config'
 import type { Transaction } from '@/models/Transaction'
+import people from '../../data/people.json'
+import categories from '../../data/categories.json'
+
+const formattedAmount = ref('')
+const currentDate = new Date()
+const currentYearMonth = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`
 
 const transaction = reactive<Transaction>({
   description: '',
   amount: 0,
   type: 'income',
-  transactionDate: '',
+  transactionDate: currentYearMonth,
   createdAt: new Date(),
   updatedAt: new Date(),
-  category: undefined,
+  categoryId: 5,
   notes: '',
   responsibleId: 0,
-  responsible: undefined
 })
 
 const loading = ref(false)
@@ -38,12 +43,12 @@ const handleSubmit = async () => {
     transaction.description = ''
     transaction.amount = 0
     transaction.type = 'income'
-    transaction.transactionDate = ''
+    transaction.transactionDate = currentYearMonth
     transaction.createdAt = new Date()
     transaction.updatedAt = new Date()
-    transaction.category = undefined
+    transaction.categoryId = 5
     transaction.notes = ''
-    transaction.responsible = undefined
+    transaction.responsibleId = 0
 
 
     error.value = ''
@@ -54,6 +59,32 @@ const handleSubmit = async () => {
     loading.value = false
   }
 }
+
+function formatToCurrency(value: number): string {
+  return value.toLocaleString('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })
+}
+
+function formatAmount(event: Event) {
+  const target = event.target as HTMLInputElement
+
+  // Eliminar todo lo que no sea número ni coma ni punto
+  const raw = target.value.replace(/[^\d]/g, '')
+
+  // Convertirlo a número en pesos, dividiendo para obtener decimales
+  const numericValue = parseFloat(raw) / 100
+
+  transaction.amount = numericValue
+  formattedAmount.value = formatToCurrency(numericValue)
+}
+
+watch(() => transaction.amount, (newVal) => {
+  formattedAmount.value = formatToCurrency(newVal)
+}, { immediate: true })
 </script>
 
 <template>
@@ -67,11 +98,11 @@ const handleSubmit = async () => {
 
       {{ transaction }}
 
-      <div>
-        <label for="type" class="block text-sm font-medium text-gray-700">Tipo</label>
+      <div class="flex flex-col gap-1">
+        <label for="type" class="block text-sm font-medium text-black">Tipo</label>
         <select
           v-model="transaction.type"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-coffee focus:ring focus:ring-coffee focus:ring-opacity-50"
+          class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
           id="type"
         >
           <option value="income">Ingreso</option>
@@ -80,82 +111,86 @@ const handleSubmit = async () => {
       </div>
 
       
-      <div>
-        <label for="category" class="block text-sm font-medium text-gray-700">Categoria</label>
+      <div class="flex flex-col gap-1">
+        <label for="category" class="block text-sm font-medium text-black">Categoria</label>
         <select
-          v-model="transaction.category"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-coffee focus:ring focus:ring-coffee focus:ring-opacity-50"
+          v-model="transaction.categoryId"
+          class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
           id="category"
         >
-          <option value="Alimentación">Alimentación</option>
-          <option value="Mano de obra">Mano de obra</option>
+          <option v-for="category in categories" :key="category.id" :value="category.id">
+            {{ category.name }}
+          </option>
         </select>
       </div>
 
-      <div>
-        <label for="amount" class="block text-sm font-medium text-gray-700">Valor</label>
+      <div class="flex flex-col gap-1">
+        <label for="amount" class="block text-sm font-medium text-black">Valor</label>
         <input
-          v-model="transaction.amount"
-          type="number"
-          step="0.01"
+          v-model="formattedAmount"
+          @input="formatAmount"
+          inputmode="numeric"
           required
           id="amount"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-coffee focus:ring focus:ring-coffee focus:ring-opacity-50"
+          class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
         />
       </div>
 
-      <div>
-        <label for="responsible" class="block text-sm font-medium text-gray-700">Responsable</label>
+      <div class="flex flex-col gap-1">
+        <label for="responsible" class="block text-sm font-medium text-black">Responsable</label>
         <select
-          v-model="transaction.responsible"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-coffee focus:ring focus:ring-coffee focus:ring-opacity-50"
-          id="responsible"
-          required
-        >
-          <option value="elber">Elber</option>
-          <option value="alfonso">Alfonso</option>
-          <option value="edier">Edier</option>
-          <option value="wilson">Wilson</option>
-        </select>
+              id="persons"
+              v-model="transaction.responsibleId"
+              class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
+            >
+              <option value="0" selected>-Seleccione un responsable-</option>
+              <option
+                v-for="person in people"
+                :key="person.id"
+                :value="person.id"
+              >
+                {{ person.firstName }}
+              </option>
+            </select>
       </div>
 
-      <div>
-        <label for="date" class="block text-sm font-medium text-gray-700">Fecha</label>
-        <input
-          v-model="transaction.transactionDate"
-          type="date"
-          required
-          id="date"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-coffee focus:ring focus:ring-coffee focus:ring-opacity-50"
-        />
+      <div class="flex flex-col gap-1">
+        <label for="transactionDate" class="block text-sm font-medium text-black">Fecha de la transacción</label>
+      <input 
+        id="transactionDate" 
+        type="month" 
+        v-model="transaction.transactionDate"
+        class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
+        required
+      />
       </div>
 
-      <div>
-        <label for="description" class="block text-sm font-medium text-gray-700">Descripción</label>
+      <div class="flex flex-col gap-1">
+        <label for="description" class="block text-sm font-medium text-black">Descripción</label>
         <input
           v-model="transaction.description"
           type="text"
           required
           id="description"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-coffee focus:ring focus:ring-coffee focus:ring-opacity-50"
+          class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
         />
       </div>
 
-      <div>
-        <label for="notes" class="block text-sm font-medium text-gray-700">Información adicional</label>
-        <input
+      <div class="flex flex-col gap-1">
+        <label for="content" class="block text-sm font-medium text-black">Contenido</label>
+        <textarea
           v-model="transaction.notes"
-          type="text"
+          rows="4"
+          id="content"
           required
-          id="notes"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-coffee focus:ring focus:ring-coffee focus:ring-opacity-50"
-        />
+          class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
+        ></textarea>
       </div>
 
       <button
         type="submit"
         :disabled="loading"
-        class="w-full bg-coffee text-white py-2 px-4 rounded-md hover:bg-coffee-dark focus:outline-none focus:ring-2 focus:ring-coffee focus:ring-opacity-50 disabled:opacity-50"
+        class="w-full bg-green text-white py-2 px-4 rounded-md hover:bg-green focus:outline-none focus:ring-2 focus:ring-green focus:ring-opacity-50 disabled:opacity-50"
       >
         {{ loading ? 'Registrando...' : 'Registrar Transacción' }}
       </button>

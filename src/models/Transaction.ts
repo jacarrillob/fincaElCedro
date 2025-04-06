@@ -1,6 +1,3 @@
-import { Category } from "./Category";
-import { Person } from "./Person";
-
 export interface Transaction {
     id?: string;
     description: string;
@@ -9,8 +6,12 @@ export interface Transaction {
     transactionDate: string;
     createdAt: Date; // Fecha de creación del registro
     updatedAt?: Date; // Fecha de última actualización (opcional)
-    category?: Category; 
+    categoryId?: number; 
     notes?: string; 
     responsibleId?: number; 
-    responsible?: Person;
+  }
+
+  export interface MonthInfo {
+    number: string;
+    name: string;
   }

@@ -6,8 +6,6 @@ import { useAuthStore } from "../stores/auth";
 const router = useRouter();
 const authStore = useAuthStore();
 
-const selectedMonth = ref('2023-01');
-
 const email = ref("");
 const password = ref("");
 const loading = ref(false);
@@ -30,18 +28,6 @@ const handleLogin = async () => {
     <h1 class="text-2xl font-bold text-black mb-6">Iniciar Sesión</h1>
 
     <form @submit.prevent="handleLogin" class="flex flex-col gap-4">
-{{ selectedMonth }}
-      <div class="flex flex-col gap-1">
-        <label for="month" class="block text-sm font-medium text-black">Mes:</label>
-      <input 
-        id="month" 
-        type="month" 
-        v-model="selectedMonth"
-        class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
-        required
-      />
-      </div>
-
       <div class="flex flex-col gap-1">
         <label for="email" class="block text-sm font-medium text-black"
           >Correo Electrónico</label
