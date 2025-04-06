@@ -49,7 +49,7 @@ const router = createRouter({
       path: '/transactions',
       name: 'transactions',
       component: () => import('../views/Transactions.vue'),
-      meta: { requiresAuth: false }
+      meta: { requiresAuth: true }
     }
   ]
 })
