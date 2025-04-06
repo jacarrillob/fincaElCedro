@@ -96,8 +96,6 @@ watch(() => transaction.amount, (newVal) => {
         {{ error }}
       </div>
 
-      {{ transaction }}
-
       <div class="flex flex-col gap-1">
         <label for="type" class="block text-sm font-medium text-black">Tipo</label>
         <select
