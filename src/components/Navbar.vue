@@ -22,7 +22,7 @@ const toggleMenu = () => {
         <div class="hidden md:flex space-x-4">
           <RouterLink to="/" class="text-black hover:text-green">Inicio</RouterLink>
           <RouterLink to="/about" class="text-black hover:text-green">Acerca de</RouterLink>
-          <RouterLink to="/blog" class="text-black hover:text-green">Blog</RouterLink>
+          <RouterLink to="/articles" class="text-black hover:text-green">Artículos</RouterLink>
           <RouterLink to="/gallery" class="text-black hover:text-green">Galería</RouterLink>
           <RouterLink to="/products" class="text-black hover:text-green">Productos</RouterLink>
           <RouterLink to="/contact" class="text-black hover:text-green">Contacto</RouterLink>
@@ -49,7 +49,7 @@ const toggleMenu = () => {
         <div class="px-2 pt-2 pb-3 space-y-1">
           <RouterLink to="/" class="block px-3 py-2 text-gray-700 hover:text-green-700">Inicio</RouterLink>
           <RouterLink to="/about" class="block px-3 py-2 text-gray-700 hover:text-green-700">Acerca de</RouterLink>
-          <RouterLink to="/blog" class="block px-3 py-2 text-gray-700 hover:text-green-700">Blog</RouterLink>
+          <RouterLink to="/articles" class="block px-3 py-2 text-gray-700 hover:text-green-700">Artículos</RouterLink>
           <RouterLink to="/gallery" class="block px-3 py-2 text-gray-700 hover:text-green-700">Galería</RouterLink>
           <RouterLink to="/products" class="block px-3 py-2 text-gray-700 hover:text-green-700">Productos</RouterLink>
           <RouterLink to="/contact" class="block px-3 py-2 text-gray-700 hover:text-green-700">Contacto</RouterLink>

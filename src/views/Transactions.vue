@@ -164,7 +164,7 @@ watch(groupTotalByResponsible, () => {
       </form>
 
       <div v-if="filteredTransactions.length" 
-        class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 border-gray-200 rounded-md"
+        class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 border-gray-200 rounded-md"
       >
         <a
           href="#"

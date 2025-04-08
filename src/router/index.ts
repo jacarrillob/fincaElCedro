@@ -15,9 +15,14 @@ const router = createRouter({
       component: () => import('../views/About.vue')
     },
     {
-      path: '/blog',
-      name: 'blog',
-      component: () => import('../views/Blog.vue')
+      path: '/articles',
+      name: 'articles',
+      component: () => import('../views/Articles.vue')
+    },
+    {
+      path: '/article/:id',
+      name: 'article',
+      component: () => import('../views/ArticleView.vue')
     },
     {
       path: '/gallery',
