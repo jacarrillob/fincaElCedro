@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useArticleStore } from "./../stores/articles";
+import { useArticleStore } from "./../stores/articles"
+import { formatDefaultDate } from "@/utils/Dates"
 
-const articles = useArticleStore();
+const articles = useArticleStore()
 </script>
 
 <template>
@@ -44,7 +45,7 @@ const articles = useArticleStore();
             </v-card-title>
 
             <v-card-subtitle class="pa-0 text-subtitle-2 font-weight-bold">
-              {{ articles.articleSelected?.date }}
+              {{  formatDefaultDate(articles.articleSelected?.date) }}
             </v-card-subtitle>
 
             <v-card-text class="pa-0 text-body-1 text-grey">{{

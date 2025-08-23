@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <footer class="h-20">
+  <footer class="h-20 border-t-sm border-white">
     <v-container>
       <v-row align="center" justify="space-between">
         <v-col cols="12" md="6" class="text-gray-600 mb-2 mb-md-0">

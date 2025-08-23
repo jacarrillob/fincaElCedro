@@ -61,7 +61,7 @@ const isMenuOpen = ref(false);
           <v-icon>mdi-menu</v-icon>
         </v-btn>
       </template>
-      <v-list>
+      <v-list class="bg-black">
         <v-list-item to="/">Inicio</v-list-item>
         <v-list-item to="/about">Acerca de</v-list-item>
         <v-list-item to="/articles">Artículos</v-list-item>

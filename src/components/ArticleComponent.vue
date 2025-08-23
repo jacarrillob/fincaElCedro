@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { BlogPost } from "@/models/BlogPost";
-import { useArticleStore } from "@/stores/articles";
+import { BlogPost } from "@/models/BlogPost"
+import { useArticleStore } from "@/stores/articles"
+import { formatDefaultDate } from "@/utils/Dates"
 defineProps({
   post: {
     type: Object as () => BlogPost,
     required: true,
   },
-});
+})
 
-const articles = useArticleStore();
+const articles = useArticleStore()
 </script>
 
 <template>
@@ -33,7 +34,7 @@ const articles = useArticleStore();
         </v-card-title>
 
         <v-card-subtitle class="pa-0 text-subtitle-2 font-weight-bold">
-          {{ new Date(post.date).toLocaleDateString() }}
+          {{ formatDefaultDate(post.date) }}
         </v-card-subtitle>
 
         <v-card-text class="pa-0 text-body-1 text-grey line-clamp-3">{{ post.content }}</v-card-text>
