@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useAuthStore } from "../stores/auth";
+import { useAuthStore } from "../stores/auth"
+  import { loginSchema as validationSchema } from '@/validation/loginSchema'
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -24,46 +25,46 @@ const handleLogin = async () => {
 </script>
 
 <template>
-  <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
-    <h1 class="text-2xl font-bold text-black mb-6">Iniciar Sesión</h1>
-
-    <form @submit.prevent="handleLogin" class="flex flex-col gap-4">
-      <div class="flex flex-col gap-1">
-        <label for="email" class="block text-sm font-medium text-black"
-          >Correo Electrónico</label
-        >
-        <input
-          type="email"
-          name="email"
-          id="email"
+  <v-container>
+    <v-card max-width="500" class="mx-auto bg-black pa-6" elevation="8">
+      <h1 class="text-h4 font-weight-bold mb-6 text-center">Iniciar Sesión</h1>
+      <v-form @submit.prevent="handleLogin">
+        {{  }}
+        <v-text-field
           v-model="email"
-          placeholder="ejemplo@ejemplo.com"
+          label="Correo Electrónico"
+          type="email"
+          :rules="[validationSchema.email]"
           required
-          class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
+          color="White"
+          density="compact"
+          variant="outlined"
+          prepend-inner-icon="mdi-email"
+          class="mb-4"
         />
-      </div>
-
-      <div class="flex flex-col gap-1">
-        <label for="password" class="block text-sm font-medium text-black">
-          Contraseña
-        </label>
-        <input
-          id="password"
-          type="password"
+        <v-text-field
           v-model="password"
+          label="Contraseña"
+          type="password"
+          :rules="[validationSchema.password]"
           placeholder="Contraseña..."
+          color="White"
+          density="compact"
+          variant="outlined"
           required
-          class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
+          prepend-inner-icon="mdi-lock"
+          class="mb-4"
         />
-      </div>
-
-      <button
-        type="submit"
-        :disabled="loading"
-        class="w-full bg-green text-white py-2 px-4 rounded-md hover:bg-green focus:outline-none focus:ring-2 focus:ring-green focus:ring-opacity-50 disabled:opacity-50"
-      >
-        {{ loading ? "Iniciando sesión..." : "Iniciar Sesión" }}
-      </button>
-    </form>
-  </div>
+        <v-btn
+          type="submit"
+          color="green"
+          block
+          size="large"
+          elevation="2"
+        >
+          Iniciar Sesión
+        </v-btn>
+      </v-form>
+    </v-card>
+  </v-container>
 </template>

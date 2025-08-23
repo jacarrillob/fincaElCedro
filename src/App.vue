@@ -5,15 +5,19 @@ import Footer from './components/Footer.vue'
 </script>
 
 <template>
-  <div class="min-h-screen bg-white flex flex-col justify-between">
-    <div class="flex flex-col">
-      <Navbar />
-    <main class="container mx-auto px-4 py-8">
-      <RouterView />
-    </main>
-    </div>
+  <v-layout class="flex-column bg-black rounded rounded-md border h-screen overflow-auto">
+    <!-- Navbar -->
+    <Navbar />
+
+    <!-- Main Content -->
+    <v-main>
+        <RouterView />
+    </v-main>
+
+    <!-- Footer -->
     <Footer />
-  </div>
+  </v-layout>
+
 
   <!-- 
    Web de referencia:

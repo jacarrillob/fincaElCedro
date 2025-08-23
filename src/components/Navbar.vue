@@ -1,71 +1,82 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useAuthStore } from '../stores/auth'
-import { RouterLink } from 'vue-router'
+import { ref } from "vue";
+import { useAuthStore } from "../stores/auth";
 
-const authStore = useAuthStore()
-const isMenuOpen = ref(false)
-
-const toggleMenu = () => {
-  isMenuOpen.value = !isMenuOpen.value
-}
+const authStore = useAuthStore();
+const isMenuOpen = ref(false);
 </script>
 
 <template>
-  <nav class="bg-white shadow-lg">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center h-16">
-        <RouterLink to="/" class="text-xl font-semibold text-green">
-          fincaElCedro
-        </RouterLink>
+  <v-app-bar class="px-3 bg-black border-b-sm border-white" flat>
+    <v-toolbar-title>
+      <v-hover>
+        <template v-slot:default="{ isHovering, props }">
+          <v-btn
+            class="font-weight-bold"
+            variant="plain"
+            to="/"
+            v-bind="props"
+            :color="isHovering ? 'green' : 'white'"
+            >fincaElCedro</v-btn
+          >
+        </template>
+      </v-hover>
+    </v-toolbar-title>
 
-        <div class="hidden md:flex space-x-4">
-          <RouterLink to="/" class="text-black hover:text-green">Inicio</RouterLink>
-          <RouterLink to="/about" class="text-black hover:text-green">Acerca de</RouterLink>
-          <RouterLink to="/articles" class="text-black hover:text-green">Artículos</RouterLink>
-          <RouterLink to="/gallery" class="text-black hover:text-green">Galería</RouterLink>
-          <RouterLink to="/products" class="text-black hover:text-green">Productos</RouterLink>
-          <RouterLink to="/contact" class="text-black hover:text-green">Contacto</RouterLink>
-          
-          <template v-if="!authStore.user">
-            <RouterLink to="/login" class="text-black hover:text-green">Login</RouterLink>
-          </template>
-          <template v-else>
-            <RouterLink to="/transactions" class="text-black hover:text-green">Transacciones</RouterLink>
-            <RouterLink to="/dashboard" class="text-gray-700 hover:text-green-700">Dashboard</RouterLink>
-            <button @click="authStore.logout" class="text-gray-700 hover:text-green-700">Cerrar Sesión</button>
-          </template>
-        </div>
+    <v-spacer />
 
-        <button @click="toggleMenu" class="md:hidden">
-          <span class="sr-only">Menu</span>
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16" />
-          </svg>
-        </button>
-      </div>
-
-      <div v-if="isMenuOpen" class="md:hidden">
-        <div class="px-2 pt-2 pb-3 space-y-1">
-          <RouterLink to="/" class="block px-3 py-2 text-gray-700 hover:text-green-700">Inicio</RouterLink>
-          <RouterLink to="/about" class="block px-3 py-2 text-gray-700 hover:text-green-700">Acerca de</RouterLink>
-          <RouterLink to="/articles" class="block px-3 py-2 text-gray-700 hover:text-green-700">Artículos</RouterLink>
-          <RouterLink to="/gallery" class="block px-3 py-2 text-gray-700 hover:text-green-700">Galería</RouterLink>
-          <RouterLink to="/products" class="block px-3 py-2 text-gray-700 hover:text-green-700">Productos</RouterLink>
-          <RouterLink to="/contact" class="block px-3 py-2 text-gray-700 hover:text-green-700">Contacto</RouterLink>
-          
-          <template v-if="!authStore.user">
-            <RouterLink to="/login" class="block px-3 py-2 text-gray-700 hover:text-green-700">Login</RouterLink>
-          </template>
-          <template v-else>
-            <RouterLink to="/transactions" class="block px-3 py-2 text-gray-700 hover:text-green-700">Transacciones</RouterLink>
-            <RouterLink to="/dashboard" class="block px-3 py-2 text-gray-700 hover:text-green-700">Dashboard</RouterLink>
-            <button @click="authStore.logout" class="block w-full text-left px-3 py-2 text-gray-700 hover:text-green-700">
-              Cerrar Sesión
-            </button>
-          </template>
-        </div>
-      </div>
+    <!-- Desktop Navigation -->
+    <div class="d-none d-md-flex align-center">
+      <v-btn variant="text" to="/" class="mx-1">Inicio</v-btn>
+      <v-btn variant="text" to="/about" class="mx-1">Acerca de</v-btn>
+      <v-btn variant="text" to="/articles" class="mx-1">Artículos</v-btn>
+      <v-btn variant="text" to="/gallery" class="mx-1">Galería</v-btn>
+      <v-btn variant="text" to="/products" class="mx-1">Productos</v-btn>
+      <v-btn v-if="false" variant="text" to="/contact" class="mx-1"
+        >Contacto</v-btn
+      >
+      <template v-if="!authStore.user">
+        <v-btn variant="text" to="/login" class="mx-1">Login</v-btn>
+      </template>
+      <template v-else>
+        <v-btn variant="text" to="/transactions" class="mx-1"
+          >Transacciones</v-btn
+        >
+        <v-btn variant="text" to="/dashboard" class="mx-1">Dashboard</v-btn>
+        <v-btn variant="text" @click="authStore.logout" class="mx-1"
+          >Cerrar Sesión</v-btn
+        >
+      </template>
     </div>
-  </nav>
+    <!-- Mobile Navigation -->
+    <v-menu
+      v-model="isMenuOpen"
+      :close-on-content-click="true"
+      activator="parent"
+      location="bottom right"
+      class="d-md-none"
+    >
+      <template #activator="{ props }">
+        <v-btn icon v-bind="props" class="d-md-none">
+          <v-icon>mdi-menu</v-icon>
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item to="/">Inicio</v-list-item>
+        <v-list-item to="/about">Acerca de</v-list-item>
+        <v-list-item to="/articles">Artículos</v-list-item>
+        <v-list-item to="/gallery">Galería</v-list-item>
+        <v-list-item to="/products">Productos</v-list-item>
+        <v-list-item v-if="false" to="/contact">Contacto</v-list-item>
+        <template v-if="!authStore.user">
+          <v-list-item to="/login">Login</v-list-item>
+        </template>
+        <template v-else>
+          <v-list-item to="/transactions">Transacciones</v-list-item>
+          <v-list-item to="/dashboard">Dashboard</v-list-item>
+          <v-list-item @click="authStore.logout">Cerrar Sesión</v-list-item>
+        </template>
+      </v-list>
+    </v-menu>
+  </v-app-bar>
 </template>
