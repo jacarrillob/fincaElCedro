@@ -41,7 +41,7 @@ onMounted(async () => {
     >
       <h1 class="text-h4">Productos</h1>
 
-      <div class="d-flex flex-column text-h1 align-center justify-center py-8">
+      <div class="d-flex flex-column text-h5 align-center justify-center py-8">
         Próximamente...
       </div>
     </v-sheet>

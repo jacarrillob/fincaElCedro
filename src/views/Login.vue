@@ -1,35 +1,43 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref } from "vue"
+import { useRouter } from "vue-router"
 import { useAuthStore } from "../stores/auth"
   import { loginSchema as validationSchema } from '@/validation/loginSchema'
 
-const router = useRouter();
-const authStore = useAuthStore();
+const router = useRouter()
+const authStore = useAuthStore()
 
-const email = ref("");
-const password = ref("");
-const loading = ref(false);
+
+const email = ref("")
+const password = ref("")
+const loading = ref(false)
+const form = ref()
 
 const handleLogin = async () => {
-  loading.value = true;
-  try {
-    await authStore.login(email.value, password.value);
-    router.push("/dashboard");
-  } catch (error) {
-    console.error(error);
-  } finally {
+  loading.value = true
+
+  const { valid } = await form.value.validate();
+  if (!valid) {
     loading.value = false;
+    return
   }
-};
+
+  try {
+    await authStore.login(email.value, password.value)
+    router.push("/dashboard")
+  } catch (error) {
+    console.error(error)
+  } finally {
+    loading.value = false
+  }
+}
 </script>
 
 <template>
   <v-container>
     <v-card max-width="500" class="mx-auto bg-black pa-6" elevation="8">
       <h1 class="text-h4 font-weight-bold mb-6 text-center">Iniciar Sesión</h1>
-      <v-form @submit.prevent="handleLogin">
-        {{  }}
+  <v-form ref="form" @submit.prevent="handleLogin">
         <v-text-field
           v-model="email"
           label="Correo Electrónico"
