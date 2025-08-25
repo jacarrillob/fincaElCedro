@@ -49,12 +49,12 @@ const {
   total,
   groupTotalByResponsible,
   getYears,
-  months
+  months,
 } = useTransactions();
 
 const getName = (id: number) => {
   const person = people.find((person: Person) => person.id === id);
-  return person ? person.firstName : '';
+  return person ? person.firstName : "";
 };
 
 watch(groupTotalByResponsible, () => {
@@ -81,112 +81,128 @@ watch(groupTotalByResponsible, () => {
 });
 </script>
 <template>
-  <div class="space-y-8">
-    <h1 class="text-3xl font-bold text-coffee">Transacciones</h1>
-
-    <div v-if="loading && !filteredTransactions.length">
-      <p>Cargando...</p>
+  <v-container>
+    <div
+      v-if="loading && !filteredTransactions.length"
+      class="d-flex flex-column align-center justify-center ga-4"
+    >
+      <v-progress-circular indeterminate color="coffee" size="50" />
+      <span class="text-grey">Cargando transacciones...</span>
     </div>
 
-    <div v-else class="flex flex-col gap-4">
-      <div v-if="filteredTransactions.length" class="flex flex-col items-center gap-4">
-        <div class="w-full">
-          <Pie :data="filteredData" :options="options" />
-        </div>
+    <div
+      v-if="filteredTransactions.length === 0 && !loading"
+      class="text-center py-8"
+    >
+      <p class="text-gray-600">No hay transacciones disponibles.</p>
+    </div>
 
-        <div>
-          <span class="text-gray font-bold">Total: </span>
-          <span class="text-gray">{{ formatCurrency(total.total) }}</span>
-        </div>
-      </div>
+    <v-sheet
+      v-if="filteredTransactions.length"
+      rounded="lg"
+      class="h-auto bg-black d-flex flex-column ga-4 pa-4 border-sm border-white rounded-lg"
+    >
+      <h1 class="text-h4">Transacciones</h1>
 
-      <form class="w-full mx-auto flex flex-col gap-2 shadow-md p-4">
-        <h3 class="text-2xl font-bold text-black">Filtros</h3>
-        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-          <div class="flex flex-col gap-1">
-            <label
-              for="persons"
-              class="block text-sm font-medium text-gray dark:text-white"
-              >Responsable</label
-            >
-            <select
-              id="persons"
-              v-model="filter.responsibleId"
-              class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
-            >
-              <option :value="0" selected>Todos</option>
-              <option
-                v-for="person in people"
-                :key="person.id"
-                :value="person.id"
-              >
-                {{ person.firstName }}
-              </option>
-            </select>
-          </div>
-
-          <div class="flex flex-col gap-1">
-            <label
-              for="years"
-              class="block text-sm font-medium text-gray dark:text-white"
-              >Año</label
-            >
-            <select
-              id="years"
-              v-model="filter.year"
-              class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
-            >
-              <option :value="0" selected>Todos</option>
-              <option v-for="y in getYears" :key="y" :value="y">
-                {{ y }}
-              </option>
-            </select>
-          </div>
-
-          <div class="flex flex-col gap-1">
-            <label
-              for="months"
-              class="block text-sm font-medium text-gray dark:text-white"
-              >Mes</label
-            >
-            <select
-              id="months"
-              v-model="filter.month"
-              class="block w-full rounded-md p-2 text-base text-black outline outline-1 -outline-offset-1 outline-gray placeholder:text-gray focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-green sm:text-sm"
-            >
-              <option :value="0" selected>Todos</option>
-              <option v-for="month in months" :key="month.number" :value="month.number">
-                {{ month.name }}
-              </option>
-            </select>
-          </div>
-        </div>
-      </form>
-
-      <div v-if="filteredTransactions.length" 
-        class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 border-gray-200 rounded-md"
+      <v-row
+        v-if="filteredTransactions.length"
+        class="mb-6"
+        align="center"
+        justify="center"
       >
-        <a
-          href="#"
-          class="flex flex-col justify-center items-center gap-2 p-2 shadow-md"
+        <v-col cols="12" md="8">
+          <Pie :data="filteredData" :options="options" style="height: 300px" />
+        </v-col>
+        <v-col cols="12" class="d-flex align-center justify-center">
+          <div>
+            <span class="text-grey font-weight-bold">Total: </span>
+            <span class="text-grey">{{ formatCurrency(total.total) }}</span>
+          </div>
+        </v-col>
+      </v-row>
+
+      <v-card class="bg-black pa-4 border-sm border-white rounded-lg" elevation="2">
+        <h3 class="text-h6 font-weight-bold mb-4">Filtros</h3>
+        <v-form>
+          <v-row dense>
+            <v-col cols="12" md="4">
+              <v-select
+                v-model="filter.responsibleId"
+                :items="[{ id: 0, firstName: 'Todos' }, ...people]"
+                item-title="firstName"
+                item-value="id"
+                label="Responsable"
+                density="compact"
+                variant="outlined"
+                color="white"
+                :list-props="{ bgColor: 'black' }"
+              />
+            </v-col>
+            <v-col cols="12" md="4">
+              <v-select
+                v-model="filter.year"
+                :items="[0, ...getYears]"
+                label="Año"
+                density="compact"
+                variant="outlined"
+                color="white"
+                :list-props="{ bgColor: 'black' }"
+                :item-title="(y) => (y === 0 ? 'Todos' : y)"
+                :item-value="(y) => y"
+              />
+            </v-col>
+            <v-col cols="12" md="4">
+              <v-select
+                v-model="filter.month"
+                :items="[{ number: 0, name: 'Todos' }, ...months]"
+                item-title="name"
+                item-value="number"
+                label="Mes"
+                density="compact"
+                variant="outlined"
+                color="white"
+                :list-props="{ bgColor: 'black' }"
+              />
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-card>
+
+      <v-row v-if="filteredTransactions.length">
+        <v-col
           v-for="(item, index) in filteredTransactions"
           :key="index"
-          @click="console.log(item)"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="3"
         >
-          <span class="font-bold text-xl text-black">{{
-            formatCurrency(item.amount)
-          }}</span>
-
-          <span class="text-gray">Descripción: {{ item.description }}</span>
-          <span class="text-gray">Fecha: {{ item.transactionDate }}</span>
-          <span class="text-gray"
-            >Responsable: {{ getName(item?.responsibleId ?? 0) }}</span
+          <v-card
+            class="bg-black pa-4 h-100 d-flex flex-column align-center justify-center border-sm border-white rounded-lg"
+            elevation="3"
           >
-        </a>
-      </div>
-      <div v-else class="text-center py-8">
-        <p>No se encontraron transacciones</p>
-      </div>
-    </div>
-  </div>
+            <div class="font-weight-bold text-h6 mb-2">
+              {{ formatCurrency(item.amount) }}
+            </div>
+            <div class="text-grey mb-1">
+              Descripción: {{ item.description }}
+            </div>
+            <div class="text-grey mb-1">Fecha: {{ item.transactionDate }}</div>
+            <div class="text-grey">
+              Responsable: {{ getName(item?.responsibleId ?? 0) }}
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-alert
+        v-else
+        type="info"
+        class="text-center my-8"
+        border="start"
+        color="grey-lighten-2"
+      >
+        No se encontraron transacciones
+      </v-alert>
+    </v-sheet>
+  </v-container>
 </template>
